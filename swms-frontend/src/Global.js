@@ -1,0 +1,1 @@
+export const dataApi = "http://47.106.8.44:7070/api"
