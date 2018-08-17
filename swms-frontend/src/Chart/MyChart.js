@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
 import { Bar } from 'react-chartjs-2';
 import Header from '../Utils/Header';
+import { DatePicker, Button } from 'antd';
 import { dataApi } from '../Global';
-
-//const now = (new Date().toLocaleDateString()).replace(/\//g,'-')
-const now = '2018-08-07'
-console.log(now)
 
 function initData(){
 	return {
@@ -54,7 +51,7 @@ function initOptions (){
 				gridLines: {
 				display: false
 				},
-				barThickness : 60,
+				barPercentage: 0.5,
 				labels: [],
 			}
 			],
@@ -107,6 +104,7 @@ function initOptions (){
 function finalData (temperature, humidity){
 	let data = initData()
 	let options = initOptions()
+
 	for (let i in humidity){
 		options.labels.push(humidity[i].htime)
 		options.scales.xAxes[0].labels.push(humidity[i].htime)
@@ -133,7 +131,7 @@ const plugins = [{
 const styles = {
     graphContainer:{
         padding: '15px',
-        width:'1000px',
+        maxWidth:'1000px',
         margin: 'auto',
     }
 }
@@ -226,12 +224,24 @@ class MyChart extends Component {
   	}
 
 	componentDidMount = () => {
-		this.getHumidity()
-		this.getTemperature()
+		let date = this.props.match.params.date
+		//console.log(date);
+		this.getHumidity(date)
+		this.getTemperature(date)
+	}
+
+	onChange = (date, dateString) => {
+		//console.log(date);
+		//console.log(dateString);
+		this.setState({chosenDate: dateString})
+	}
+
+	onClick = () => {
+		window.location.href = '/chart/'+this.state.chosenDate
 	}
   
-  	getHumidity = () => {
-		fetch(dataApi + "/humidity?date=" + now,{
+  	getHumidity = (date) => {
+		fetch(dataApi + "/humidity?date=" + date,{
 			method: 'get',
 			credentials: 'include'
 		})
@@ -256,8 +266,8 @@ class MyChart extends Component {
 		)
 	}
 
-	getTemperature = () => {
-		fetch(dataApi + "/temperature?date=" + now,{
+	getTemperature = (date) => {
+		fetch(dataApi + "/temperature?date=" + date,{
 			method: 'get',
 			credentials: 'include'
 		})
@@ -285,19 +295,30 @@ class MyChart extends Component {
 		if (this.state.rawHumidity==null || this.state.rawTemperature==null)
 			return (
                 <div style={styles.container}>
-                    <Header title="Chart1"/>
+                    <Header title="CHART"/>
+					<br/><br/><br/>
+					<DatePicker onChange={this.onChange} />
+					&nbsp;&nbsp;&nbsp;
+					<Button type="primary" size="large" onClick={this.onClick}>Confirm</Button>
+					<br/><br/><br/>
                     <h2>No Data</h2>
                 </div>
             )
 		let result = finalData(this.state.rawTemperature, this.state.rawHumidity)
 		return (
             <div>
-                <Header title="Chart1"/>
+                <Header title="CHART"/>
+				<br/><br/><br/>
+				<DatePicker onChange={this.onChange} />
+				&nbsp;&nbsp;&nbsp;
+				<Button type="primary" size="large" onClick={this.onClick}>Confirm</Button>
                 <br/><br/><br/>
+				<h2>{this.props.match.params.date}</h2>
                 <div style={styles.graphContainer}>
                     <Bar data={result.data}  options={result.options}/>
                 </div>
             </div>
+			
 		)
 	}
 }

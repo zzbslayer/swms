@@ -20,7 +20,7 @@ class App extends Component {
 				<div>
 					<MyMenu/>
 					<Route exact path="/" component={Home}></Route>
-					<Route exact path="/chart1" component={MyChart}></Route>
+					<Route exact path="/chart/:date" component={MyChart}></Route>
 				</div>
 				</Router>
 			</div>

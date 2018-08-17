@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Menu, Icon } from 'antd';
 import { Link } from 'react-router-dom';
+import { now } from '../Global'
 
 
 class MyMenu extends Component{
@@ -28,8 +29,8 @@ class MyMenu extends Component{
             <Menu.Item key="home">
                 <Link to='/'><Icon type="home" />Home</Link>
             </Menu.Item>
-            <Menu.Item key="chart1">
-                <Link to='/chart1'><Icon type="eye" />Chart1</Link>
+            <Menu.Item key="chart">
+                <Link to={'/chart/'+now}><Icon type="eye" />Chart</Link>
               	</Menu.Item>
         </Menu>
       )
