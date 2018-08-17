@@ -23,4 +23,6 @@ public class TemperatureController {
     public List<TemperatureEntity> getTemperature(@RequestParam("date")Date date){
         return temperatureRepository.findByTdate(date);
     }
+
+
 }
