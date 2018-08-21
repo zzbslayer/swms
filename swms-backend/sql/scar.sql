@@ -10,6 +10,7 @@ create table temperature
 create table humidity
 (
     hid integer NOT NULL UNIQUE AUTO_INCREMENT,
+    flower integer NOT NULL,
     hdate date NOT NULL,
     htime time NOT NULL,
     humidity float NOT NULL,

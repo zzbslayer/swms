@@ -21,8 +21,9 @@ public class HumidityController {
 
     @GetMapping(value="/humidity")
     @ResponseBody
-    public List<HumidityEntity> getHumidity(@RequestParam("date")Date date){
-        return humidityRepository.findByHdate(date);
+    public List<HumidityEntity> getHumidity(@RequestParam("date")Date date, @RequestParam("flower")Integer flower){
+        if (flower == 0)
+            return  humidityRepository.findByHdate(date);
+        return humidityRepository.findByHdateAndFlower(date,flower);
     }
-
 }

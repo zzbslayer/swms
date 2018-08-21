@@ -5,9 +5,10 @@ import java.sql.Date;
 import java.sql.Time;
 
 @Entity
-@Table(name = "humidity", schema = "smartcar", catalog = "")
+@Table(name = "humidity", schema = "swms", catalog = "")
 public class HumidityEntity {
     private int hid;
+    private int flower;
     private Date hdate;
     private Time htime;
     private double humidity;
@@ -20,6 +21,16 @@ public class HumidityEntity {
 
     public void setHid(int hid) {
         this.hid = hid;
+    }
+
+    @Basic
+    @Column(name = "flower", nullable = false)
+    public int getFlower() {
+        return flower;
+    }
+
+    public void setFlower(int flower) {
+        this.flower = flower;
     }
 
     @Basic
@@ -60,6 +71,7 @@ public class HumidityEntity {
         HumidityEntity that = (HumidityEntity) o;
 
         if (hid != that.hid) return false;
+        if (flower != that.flower) return false;
         if (Double.compare(that.humidity, humidity) != 0) return false;
         if (hdate != null ? !hdate.equals(that.hdate) : that.hdate != null) return false;
         if (htime != null ? !htime.equals(that.htime) : that.htime != null) return false;
@@ -72,6 +84,7 @@ public class HumidityEntity {
         int result;
         long temp;
         result = hid;
+        result = 31 * result + flower;
         result = 31 * result + (hdate != null ? hdate.hashCode() : 0);
         result = 31 * result + (htime != null ? htime.hashCode() : 0);
         temp = Double.doubleToLongBits(humidity);

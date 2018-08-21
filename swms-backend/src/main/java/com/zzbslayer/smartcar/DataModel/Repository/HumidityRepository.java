@@ -11,4 +11,6 @@ import java.util.Optional;
 @Repository
 public interface HumidityRepository extends JpaRepository<HumidityEntity, Integer>{
     List<HumidityEntity> findByHdate(Date date);
+
+    List<HumidityEntity> findByHdateAndFlower(Date date, Integer flower);
 }

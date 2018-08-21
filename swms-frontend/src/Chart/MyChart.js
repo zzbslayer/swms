@@ -20,13 +20,33 @@ function initData(){
 				yAxisID: 'y-axis-1'
 			},{
 				type: 'bar',
-				label: 'Humidity',
+				label: 'Humidity1',
 				data: [],
 				fill: false,
 				backgroundColor: '#87CEFA',
 				borderColor: '#87CEFA',
 				hoverBackgroundColor: '#87CEFA',
 				hoverBorderColor: '#87CEFA',
+				yAxisID: 'y-axis-2'
+			},{
+				type: 'bar',
+				label: 'Humidity2',
+				data: [],
+				fill: false,
+				backgroundColor: '#54FF9F',
+				borderColor: '#54FF9F',
+				hoverBackgroundColor: '#54FF9F',
+				hoverBorderColor: '#54FF9F',
+				yAxisID: 'y-axis-2'
+			},{
+				type: 'bar',
+				label: 'Humidity3',
+				data: [],
+				fill: false,
+				backgroundColor: '#FF6A6A',
+				borderColor: '#FF6A6A',
+				hoverBackgroundColor: '#FF6A6A',
+				hoverBorderColor: '#FF6A6A',
 				yAxisID: 'y-axis-2'
 			}]
 	}
@@ -105,14 +125,18 @@ function finalData (temperature, humidity){
 	let data = initData()
 	let options = initOptions()
 
-	for (let i in humidity){
-		options.labels.push(humidity[i].htime)
-		options.scales.xAxes[0].labels.push(humidity[i].htime)
-		data.datasets[1].data.push(humidity[i].humidity)
-	}
 	for (let i in temperature){
-		data.datasets[0].data.push(temperature[i].temperature)
+		let current = temperature[i]
+		options.labels.push(current.ttime)
+		options.scales.xAxes[0].labels.push(current.ttime)
+		data.datasets[0].data.push(current.temperature)
 	}
+
+	for (let i in humidity){
+		let current = humidity[i]
+		data.datasets[current.flower].data.push(current.humidity)
+	}
+	
 	let result = {}
 	result.data = data
 	result.options = options
@@ -241,7 +265,7 @@ class MyChart extends Component {
 	}
   
   	getHumidity = (date) => {
-		fetch(dataApi + "/humidity?date=" + date,{
+		fetch(dataApi + "/humidity?date=" + date + "&flower=0",{
 			method: 'get',
 			credentials: 'include'
 		})
@@ -253,7 +277,7 @@ class MyChart extends Component {
 					console.log(result.msg)
 				}
 				else{
-					console.log(result)
+					//console.log(result)
 					this.setState({
 						rawHumidity: result
 					})
