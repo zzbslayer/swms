@@ -161,25 +161,39 @@ function finalData (temperature, humidity){
 		data.datasets[0].data.push(current.temperature)
 	}
 
-	let cnt = 0
-	console.log(humidity.length)
+	let cnt = 0	
 	for (let i = 0; i < humidity.length; i++) {
 		let current = humidity[i]
 		let processTime = timeProcess(current.htime)
-		//console.log("i="+i)
-		//console.log(processTime)
-		//console.log("cnt="+cnt)
-		//console.log(options.labels[cnt])
-		//console.log("########################")
+		console.log("i="+i)
+		console.log(processTime)
+		console.log("cnt="+cnt)
+		console.log(options.labels[cnt])
+		console.log("########################")
 		if (processTime === options.labels[cnt]){
 			data.datasets[current.flower].data.push(current.humidity)
-			cnt++
+		}
+		else if (processTime < options.labels[cnt]){
+			/* 
+				loss of temperature point
+				1. insert humidity data
+				2. insert null temperature data
+			*/
+			data.datasets[current.flower].data.push(current.humidity)
+			options.labels.splice(cnt, 0, processTime)
+			options.scales.xAxes[0].labels.splice(cnt, 0, processTime)
+			data.datasets[0].data.splice(cnt, 0, null)
 		}
 		else{
+			/*
+				loss of humidity point
+				1. insert null humidity data
+				2. keep i unchange
+			*/
 			data.datasets[current.flower].data.push(null)
-			cnt++
 			i-=1
 		}
+		cnt++
 		if (options.labels.length === cnt){
 			cnt = 0
 		}
