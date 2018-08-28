@@ -121,20 +121,68 @@ function initOptions (){
 	}
 };
 
+function timeProcess(time){
+	let array = time.split(':')
+	let hour = parseInt(array[0], 10)
+	let minute = parseInt(array[1], 10)
+	if (minute < 0 || minute > 60)
+		return -1
+	if ( minute < 10){
+		minute = "00"
+	}
+	if ( 60 - minute <= 10){
+		minute = "00"
+		if (hour === 23){
+			hour = "00"
+		}
+		else{
+			hour += 1
+		}
+	}
+	if ( Math.abs(minute-30) <= 10){
+		minute = "30"
+	}
+	let result = hour + ":" + minute + ":00"
+	return result
+}
+
 function finalData (temperature, humidity){
 	let data = initData()
 	let options = initOptions()
 
+	/* counter for the 2nd for-loop */
+
 	for (let i in temperature){
 		let current = temperature[i]
-		options.labels.push(current.ttime)
-		options.scales.xAxes[0].labels.push(current.ttime)
+		let processTime = timeProcess(current.ttime)
+		//console.log(processTime)
+		options.labels.push(processTime)
+		options.scales.xAxes[0].labels.push(processTime)
 		data.datasets[0].data.push(current.temperature)
 	}
 
-	for (let i in humidity){
+	let cnt = 0
+	console.log(humidity.length)
+	for (let i = 0; i < humidity.length; i++) {
 		let current = humidity[i]
-		data.datasets[current.flower].data.push(current.humidity)
+		let processTime = timeProcess(current.htime)
+		//console.log("i="+i)
+		//console.log(processTime)
+		//console.log("cnt="+cnt)
+		//console.log(options.labels[cnt])
+		//console.log("########################")
+		if (processTime === options.labels[cnt]){
+			data.datasets[current.flower].data.push(current.humidity)
+			cnt++
+		}
+		else{
+			data.datasets[current.flower].data.push(null)
+			cnt++
+			i-=1
+		}
+		if (options.labels.length === cnt){
+			cnt = 0
+		}
 	}
 	
 	let result = {}
