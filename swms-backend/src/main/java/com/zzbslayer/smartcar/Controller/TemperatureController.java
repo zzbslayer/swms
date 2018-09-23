@@ -1,6 +1,5 @@
 package com.zzbslayer.smartcar.Controller;
 
-import com.zzbslayer.smartcar.DataModel.Entity.HumidityEntity;
 import com.zzbslayer.smartcar.DataModel.Entity.TemperatureEntity;
 import com.zzbslayer.smartcar.DataModel.Repository.TemperatureRepository;
 import org.springframework.beans.factory.annotation.Autowired;

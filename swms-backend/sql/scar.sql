@@ -7,12 +7,12 @@ create table temperature
     primary key (tid)
 );
 
-create table humidity
+create table dryness
 (
-    hid integer NOT NULL UNIQUE AUTO_INCREMENT,
+    did integer NOT NULL UNIQUE AUTO_INCREMENT,
     flower integer NOT NULL,
-    hdate date NOT NULL,
-    htime time NOT NULL,
-    humidity float NOT NULL,
-    primary key (hid)
+    ddate date NOT NULL,
+    dtime time NOT NULL,
+    dryness float NOT NULL,
+    primary key (did)
 );
